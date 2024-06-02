@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    #scripts and commands to be added here or in dockerfiles of each service
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      #env vars here (user,db,secrets ...etc)
+      POSTGRES_DB: tba
+      POSTGRES_USER: tba
+      POSTGRES_PASSWORD: tba
+    healthcheck:
+      #db name to be modified
+      test: ["CMD-SHELL", "pg_isready -q -d mydatabase -U myuser"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
