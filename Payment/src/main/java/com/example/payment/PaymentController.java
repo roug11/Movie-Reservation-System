@@ -1,12 +1,19 @@
 package com.example.payment;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/theatres")
 public class PaymentController {
     @GetMapping
-    public String sayHello() {
+    public String getPayment() {
         return "Hello, World!";
     }
+    @PostMapping
+    public String setPayment() {
+        return "Hello, World!";
+    }
+    @DeleteMapping String deletePayement(){return "Hello, World!";}
+    @PutMapping String updatePayment(){return "Hello, World!";}
 }
