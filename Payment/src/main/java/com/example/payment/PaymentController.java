@@ -4,7 +4,7 @@ import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/theatres")
+@RequestMapping("/api/payment")
 public class PaymentController {
     @GetMapping
     public String getPayment() {
