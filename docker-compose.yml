@@ -4,17 +4,17 @@ services:
     #scripts and commands to be added here or in dockerfiles of each service
     image: postgres:latest
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
     environment:
       #env vars here (user,db,secrets ...etc)
-      POSTGRES_DB: tba
-      POSTGRES_USER: tba
-      POSTGRES_PASSWORD: tba
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
     healthcheck:
       #db name to be modified
-      test: ["CMD-SHELL", "pg_isready -q -d mydatabase -U myuser"]
+      test: ["CMD-SHELL", "pg_isready -q -d postgres -U admin"]
       interval: 10s
       retries: 5
       start_period: 30s
