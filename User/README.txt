@@ -4,7 +4,8 @@ Spring boot 3.3.0
 
 //build project
 mvc clean install
-(ყველა პროექტი დაბილდულია ანუ .jar ფაილები შექმნილია და ეს შეიძლება არ დაგჭირდეთ)
+     or
+mvn package
 
 //run application
 mvn spring-boot:run
