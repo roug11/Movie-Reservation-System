@@ -1,20 +1,16 @@
 package com.example.theatre.persistence.entity;
 
-
-import com.example.theatre.api.dto.TheatreRequestDto;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "theater")
+//@SequenceGenerator(name = "theater_seq", sequenceName = "theater_seq", allocationSize = 1)
 public class Theatre {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String address;
-
-}
+}qq
