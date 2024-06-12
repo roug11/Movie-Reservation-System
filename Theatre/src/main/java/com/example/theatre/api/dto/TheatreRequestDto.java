@@ -24,10 +24,10 @@ public class TheatreRequestDto {
         return name;
     }
 
-    public Theatre mapToEntity(TheatreRequestDto dto) {
+    public Theatre mapToEntity() {
         Theatre theatre = new Theatre();
-        theatre.setName(dto.getName());
-        theatre.setAddress(dto.getAddress());
+        theatre.setName(getName());
+        theatre.setAddress(getAddress());
         return theatre;
     }
 }
