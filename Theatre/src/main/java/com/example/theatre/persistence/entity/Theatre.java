@@ -13,4 +13,4 @@ public class Theatre {
     private Long id;
     private String name;
     private String address;
-}qq
+}
