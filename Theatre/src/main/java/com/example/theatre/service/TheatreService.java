@@ -5,11 +5,13 @@ import com.example.theatre.persistence.entity.Theatre;
 import com.example.theatre.persistence.repository.TheatreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class TheatreService {
     private final TheatreRepository theatreRepository;
 
@@ -18,7 +20,7 @@ public class TheatreService {
         this.theatreRepository = theatreRepository;
     }
 
-    public TheatreRequestDto getTheatreById(Long id){
+    public TheatreRequestDto getTheatreById(Integer id){
         Theatre theatreEntity = theatreRepository.getById(id);
         return TheatreRequestDto.builder()
                 .name(theatreEntity.getName())
@@ -26,7 +28,7 @@ public class TheatreService {
     }
 
     public List<TheatreRequestDto> getAll(){
-        List<Theatre> theatreList = theatreRepository.getAll();
+        List<Theatre> theatreList = theatreRepository.findAll();
         List<TheatreRequestDto> theatreRequestDtoList = new ArrayList<>();
         for (int i = 0; i < theatreList.size(); i++){
             TheatreRequestDto currentTheatre = new TheatreRequestDto(); /// აქ მგონი არ უნდა new-თი შექმნა
@@ -38,19 +40,19 @@ public class TheatreService {
         return theatreRequestDtoList;
     }
 
-    TheatreRequestDto addTheatre(TheatreRequestDto theatreRequestDto){
+    public TheatreRequestDto addTheatre(TheatreRequestDto theatreRequestDto){
         Theatre theatreEntity = new Theatre();
         theatreEntity = theatreRequestDto.mapToEntity();
-        theatreRepository.insert(theatreEntity);
+        theatreRepository.saveAndFlush(theatreEntity);
         return theatreRequestDto;
     }
 
-    TheatreRequestDto updateTheatre(Long id, TheatreRequestDto theatreRequestDto){
+    public TheatreRequestDto updateTheatre(Integer id, TheatreRequestDto theatreRequestDto){
         Theatre theatreEntity = new Theatre();
         theatreEntity = theatreRepository.getById(id);
         theatreEntity.setName(theatreRequestDto.getName());
         theatreEntity.setAddress(theatreRequestDto.getAddress());
-        theatreEntity = theatreRepository.update(theatreEntity);
+
 
         return TheatreRequestDto.builder()
                 .name(theatreEntity.getName())
@@ -58,7 +60,7 @@ public class TheatreService {
 
     }
 
-    void delete(Long id){
-        theatreRepository.delete(id);
+    public void delete(Integer id){
+        theatreRepository.deleteById(id);
     }
 }
