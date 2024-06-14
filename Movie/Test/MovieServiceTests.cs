@@ -1,9 +1,9 @@
-﻿using Moq;
-using Movie.Dto;
+﻿using Movie.Dto;
 using Movie.Entity;
 using Movie.Exceptions;
 using Movie.Repository;
 using Movie.Service;
+using Moq;
 using Xunit;
 
 namespace Movie.Test
@@ -13,7 +13,6 @@ namespace Movie.Test
         private readonly DatabaseFixture _fixture;
         private readonly Mock<IMovieRepository> _repository;
         private readonly MovieService _service;
-
 
         public MovieServiceTests(DatabaseFixture fixture)
         {
@@ -25,30 +24,16 @@ namespace Movie.Test
         [Fact]
         public async Task GetMovie_WhenIdNotExists_ShouldThrowMovieNotFoundException()
         {
-            //arrange
-            var service = new MovieService(new MockMovieRepository());
+            // Arrange
+            _repository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>(), It.IsAny<int>()))
+                .ThrowsAsync(new MovieNotFoundException("2"));
 
-            //act
-            var task = async () => await service.Get(CancellationToken.None, 2).ConfigureAwait(false);
-
-            //assert
-            var exception = await Assert.ThrowsAsync<MovieNotFoundException>(task);
-            Assert.Equal($"Movie {2} not found", exception.Message);
-        }
-
-        [Fact]
-        public async Task GetMovie_WhenIdNotExists_ShouldThrowMovieNotFoundException1()
-        {
-            //arrange
-            _repository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>(), 2))
-                .ReturnsAsync((MovieEntity)null);
-
-            //act
+            // Act
             var task = async () => await _service.Get(CancellationToken.None, 2).ConfigureAwait(false);
 
-            //assert
+            // Assert
             var exception = await Assert.ThrowsAsync<MovieNotFoundException>(task);
-            Assert.Equal($"Movie {2} not found", exception.Message);
+            Assert.Equal("Movie 2 not found", exception.Message);
         }
 
         [Fact]
@@ -68,12 +53,10 @@ namespace Movie.Test
                 Description = requestModel.Description,
             };
 
-            // Simulate CreateAsync to add a movie and assign an ID
             _repository.Setup(x => x.CreateAsync(It.IsAny<CancellationToken>(), It.IsAny<MovieEntity>()))
                 .Returns(Task.CompletedTask)
                 .Callback<CancellationToken, MovieEntity>((ct, movie) => movie.Id = 1);
 
-            // Simulate GetAsync to retrieve the movie by ID
             _repository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>(), 1))
                 .ReturnsAsync(movieEntity);
 
@@ -90,13 +73,13 @@ namespace Movie.Test
         }
 
         [Fact]
-        public async Task CreateMovie_WhenDataIsValid_ShoudAddedOneMovie()
+        public async Task CreateMovie_WhenDataIsValid_ShouldAddOneMovie()
         {
             //arrange
             var requestModel = new MovieRequestModel()
             {
                 Title = "Harry Potter",
-                Description = "A story about a boy who lived",
+                Description = ""
             };
 
             var repository = new MovieRepository(_fixture.Context);
@@ -111,6 +94,42 @@ namespace Movie.Test
             Assert.NotNull(@new);
             Assert.Equal(last.Count + 1, @new.Count);
         }
+
+        [Fact]
+        public async Task DeleteMovie_WhenIdNotExists_ShouldThrowMovieNotFoundException()
+        {
+            // Arrange
+            int movieId = 2;
+            _repository.Setup(x => x.GetAsync(It.IsAny<CancellationToken>(), movieId))
+                .ThrowsAsync(new MovieNotFoundException($"Movie {movieId} not found"));
+
+            // Act
+            var task = async () => await _service.Delete(CancellationToken.None, movieId).ConfigureAwait(false);
+
+            // Assert
+            var exception = await Assert.ThrowsAsync<MovieNotFoundException>(task);
+            Assert.Equal($"Movie {movieId} not found", exception.Message);
+        }
+
+        [Fact]
+        public async Task GetAllMovies_ShouldReturnListOfMovies()
+        {
+            // Arrange
+            var movies = new List<MovieEntity>
+            {
+                new MovieEntity { Id = 1, Title = "Harry Potter", Description = "A story about a boy who lived" },
+                new MovieEntity { Id = 2, Title = "Lord of the Rings", Description = "A story about the one ring" }
+            };
+
+            _repository.Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(movies);
+
+            // Act
+            var result = await _service.GetAll(CancellationToken.None).ConfigureAwait(false);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+        }
     }
 }
-
