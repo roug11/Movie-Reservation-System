@@ -36,7 +36,7 @@ namespace Movie.Repository
             await base.RemoveAsync(cancellationToken, id);
         }
 
-        public async Task<bool> Exists(CancellationToken cancellationToken, int id)
+        public async Task<bool> ExistsAsync(CancellationToken cancellationToken, int id)
         {
             return await base.AnyAsync(cancellationToken, x => x.Id == id);
         }

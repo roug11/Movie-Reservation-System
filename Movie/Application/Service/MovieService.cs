@@ -15,15 +15,18 @@ namespace Movie.Service
         {
             _repository = repository;
         }
-        public async Task CreateAsync(CancellationToken cancellationToken, MovieRequestModel movie)
+        public async Task<MovieResponseModel> Create(CancellationToken cancellationToken, MovieRequestModel movie)
         {
             var movieToInsert = movie.Adapt<MovieEntity>();
             await _repository.CreateAsync(cancellationToken, movieToInsert);
+
+            var responseModel = movieToInsert.Adapt<MovieResponseModel>();
+            return responseModel;
         }
 
         public async Task Delete(CancellationToken cancellationToken, int id)
         {
-            if (!await _repository.Exists(cancellationToken, id))
+            if (!await _repository.ExistsAsync(cancellationToken, id))
                 throw new MovieNotFoundException(id.ToString());
 
             await _repository.DeleteAsync(cancellationToken, id);
@@ -46,14 +49,17 @@ namespace Movie.Service
             return result.Adapt<List<MovieResponseModel>>();
         }
 
-        public async Task Update(CancellationToken cancellationToken, MovieRequestModel movie)
+        public async Task Update(CancellationToken cancellationToken, int id, MovieRequestModel movie)
         {
-            if (!await _repository.Exists(cancellationToken, movie.Id))
-                throw new MovieNotFoundException(movie.Id.ToString());
+            if (!await _repository.ExistsAsync(cancellationToken, id))
+                throw new MovieNotFoundException(id.ToString());
 
             var movieToUpdate = movie.Adapt<MovieEntity>();
 
+            movieToUpdate.Id = id;
+
             await _repository.UpdateAsync(cancellationToken, movieToUpdate);
         }
+
     }
 }

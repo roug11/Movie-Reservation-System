@@ -61,7 +61,7 @@ namespace Movie.Test
                 .ReturnsAsync(movieEntity);
 
             // Act
-            await _service.CreateAsync(CancellationToken.None, requestModel).ConfigureAwait(false);
+            await _service.Create(CancellationToken.None, requestModel).ConfigureAwait(false);
             var movie = await _service.Get(CancellationToken.None, 1).ConfigureAwait(false);
 
             // Assert
@@ -87,7 +87,7 @@ namespace Movie.Test
             var last = await service.GetAll(CancellationToken.None);
 
             //act
-            await service.CreateAsync(CancellationToken.None, requestModel).ConfigureAwait(false);
+            await service.Create(CancellationToken.None, requestModel).ConfigureAwait(false);
             var @new = await service.GetAll(CancellationToken.None);
 
             //assety

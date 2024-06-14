@@ -10,7 +10,7 @@ namespace Movie.Repository
         Task CreateAsync(CancellationToken cancellationToken, MovieEntity movie);
         Task UpdateAsync(CancellationToken cancellationToken, MovieEntity movie);
         Task DeleteAsync(CancellationToken cancellationToken, int id);
-        Task<bool> Exists(CancellationToken cancellationToken, int id);
+        Task<bool> ExistsAsync(CancellationToken cancellationToken, int id);
 
     }
 }

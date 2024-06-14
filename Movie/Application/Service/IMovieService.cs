@@ -5,10 +5,10 @@ namespace Movie.Service
     public interface IMovieService
     {
 
-        Task CreateAsync(CancellationToken cancellationToken, MovieRequestModel movie);
+        Task<MovieResponseModel> Create(CancellationToken cancellationToken, MovieRequestModel movie);
         Task<List<MovieResponseModel>> GetAll(CancellationToken cancellationToken);
         Task<MovieResponseModel> Get(CancellationToken cancellationToken, int id);
-        Task Update(CancellationToken cancellationToken, MovieRequestModel movie);
+        Task Update(CancellationToken cancellationToken, int id, MovieRequestModel movie);
         Task Delete(CancellationToken cancellationToken, int id);
 
     }

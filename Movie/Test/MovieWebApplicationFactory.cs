@@ -1,10 +1,11 @@
 ﻿using Moq;
 using Movie.Dto;
+using Movie.Entity;
 using Movie.Service;
 
 namespace Movie.Test
 {
-    public class PersonWebApplicationFactory : CustomWebApplicationFactory<CustomStartup>
+    public class MovieWebApplicationFactory : CustomWebApplicationFactory<CustomStartup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -21,7 +22,7 @@ namespace Movie.Test
                         Description = "",
                     });
 
-                    mock.Setup(x => x.CreateAsync(It.IsAny<CancellationToken>(), It.Is<MovieRequestModel>(x => x.Id == 1))).Verifiable();
+                    mock.Setup(x => x.Create(It.IsAny<CancellationToken>(), It.Is<MovieRequestModel>(x => x.Description == ""))).Verifiable();
 
                     return mock.Object;
                 });

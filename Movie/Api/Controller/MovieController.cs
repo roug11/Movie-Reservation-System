@@ -4,7 +4,7 @@ using Movie.Service;
 
 namespace Movie.Controllers
 {
-    [Route("api/movie")]
+    [Route("movies")]
     [ApiController]
     public class MovieController : ControllerBase
     {
@@ -37,13 +37,13 @@ namespace Movie.Controllers
         [HttpPost]
         public async Task Post(CancellationToken cancellationToken, MovieRequestModel request)
         {
-            await _movieService.CreateAsync(cancellationToken, request);
+            await _movieService.Create(cancellationToken, request);
         }
 
-        [HttpPut]
-        public async Task Put(CancellationToken cancellationToken, MovieRequestModel request)
+        [HttpPut("{id}")]
+        public async Task Put(CancellationToken cancellationToken, int id, MovieRequestModel request)
         {
-            await _movieService.Update(cancellationToken, request);
+            await _movieService.Update(cancellationToken, id, request);
         }
 
     }

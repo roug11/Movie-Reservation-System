@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Movie.Test
 {
-    public class MovieControllerTests : IClassFixture<PersonWebApplicationFactory>
+    public class MovieControllerTests : IClassFixture<MovieWebApplicationFactory>
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseRequestUrl;
@@ -17,10 +17,10 @@ namespace Movie.Test
             PropertyNameCaseInsensitive = true
         };
 
-        public MovieControllerTests(PersonWebApplicationFactory factory)
+        public MovieControllerTests(MovieWebApplicationFactory factory)
         {
             _httpClient = factory.CreateClient();
-            _baseRequestUrl = "api/movie";
+            _baseRequestUrl = "movies";
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Movie.Test
             var model = new MovieRequestModel
             {
                 Title = "New Movie",
-                Description = "A new movie description"
+                Description = ""
             };
 
             var json = JsonSerializer.Serialize(model);
@@ -71,17 +71,19 @@ namespace Movie.Test
         public async Task UpdateMovie_WithValidData_ShouldReturnOk()
         {
             // Arrange
+            var idToUpdate = 1; // Specify the ID of the movie to update
+
             var model = new MovieRequestModel
             {
                 Title = "Updated Movie",
-                Description = "An updated movie description"
+                Description = ""
             };
 
             var json = JsonSerializer.Serialize(model);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Act
-            var response = await _httpClient.PutAsync($"{_baseRequestUrl}", data).ConfigureAwait(false);
+            var response = await _httpClient.PutAsync($"{_baseRequestUrl}/{idToUpdate}", data).ConfigureAwait(false);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);

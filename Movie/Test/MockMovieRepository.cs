@@ -31,7 +31,7 @@ namespace Movie.Test
             return Task.CompletedTask;
         }
 
-        public Task<bool> Exists(CancellationToken cancellationToken, int id)
+        public Task<bool> ExistsAsync(CancellationToken cancellationToken, int id)
         {
             var movieExists = _movies.Any(m => m.Id == id);
             return Task.FromResult(movieExists);
