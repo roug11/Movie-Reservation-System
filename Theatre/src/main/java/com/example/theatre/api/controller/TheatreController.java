@@ -12,11 +12,6 @@ import java.util.List;
 public class TheatreController {
     private final TheatreService theatreService;
 
-    @GetMapping
-    public String sayHello() {
-        return "Hello, World!";
-    }
-
     @GetMapping("/theatre")
     public List<TheatreRequestDto> getTheatres(){
         return theatreService.getAll();
