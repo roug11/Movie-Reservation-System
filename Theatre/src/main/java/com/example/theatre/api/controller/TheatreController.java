@@ -1,6 +1,6 @@
 package com.example.theatre.api.controller;
 
-import com.example.theatre.api.dto.TheatreRequestDto;
+import com.example.theatre.api.dto.TheatreDto;
 import com.example.theatre.persistence.entity.Theatre;
 import com.example.theatre.service.TheatreService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ public class TheatreController {
     private final TheatreService theatreService;
 
     @GetMapping("/theatre")
-    public List<TheatreRequestDto> getTheatres(){
+    public List<TheatreDto> getTheatres(){
         List<Theatre> theatreList = theatreService.getAll();
-        List<TheatreRequestDto> theatreDtoList =  theatreList.stream()
-                .map(theatre -> TheatreRequestDto.builder()
+        List<TheatreDto> theatreDtoList =  theatreList.stream()
+                .map(theatre -> TheatreDto.builder()
                         .name(theatre.getName())
                         .address(theatre.getAddress())
                         .build())
@@ -28,27 +28,27 @@ public class TheatreController {
     }
 
     @GetMapping("/theatre/{theatreId}")
-    public TheatreRequestDto getById(@PathVariable("theatreId") int theatreId){
+    public TheatreDto getById(@PathVariable("theatreId") int theatreId){
         Theatre theatre = theatreService.getTheatreById(theatreId);
-        TheatreRequestDto theatreDto = TheatreRequestDto.builder()
+        TheatreDto theatreDto = TheatreDto.builder()
                                             .name(theatre.getName())
                                             .address(theatre.getAddress()).build();
         return theatreDto;
     }
 
     @PostMapping("/theatre")
-    public TheatreRequestDto create(@RequestBody TheatreRequestDto theatreRequestDto){
-        theatreService.addTheatre(theatreRequestDto);
-        return theatreRequestDto;
+    public TheatreDto create(@RequestBody TheatreDto theatreDto){
+        theatreService.addTheatre(theatreDto);
+        return theatreDto;
     }
 
     @PutMapping("/theatre")
-    public TheatreRequestDto update(@RequestBody int theatreId, TheatreRequestDto theatreRequestDto){
-        Theatre theatre = theatreService.updateTheatre(theatreId, theatreRequestDto);
-        TheatreRequestDto theatreDto = TheatreRequestDto.builder()
+    public TheatreDto update(@RequestBody int theatreId, TheatreDto theatreDto){
+        Theatre theatre = theatreService.updateTheatre(theatreId, theatreDto);
+        TheatreDto resultTheatreDto = TheatreDto.builder()
                 .name(theatre.getName())
                 .address(theatre.getAddress()).build();
-        return theatreDto;
+        return resultTheatreDto;
     }
 
     @DeleteMapping("/theatre/{theatreId}")

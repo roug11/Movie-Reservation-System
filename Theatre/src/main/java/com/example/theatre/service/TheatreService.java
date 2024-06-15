@@ -1,6 +1,6 @@
 package com.example.theatre.service;
 
-import com.example.theatre.api.dto.TheatreRequestDto;
+import com.example.theatre.api.dto.TheatreDto;
 import com.example.theatre.persistence.entity.Theatre;
 import com.example.theatre.persistence.repository.TheatreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +30,18 @@ public class TheatreService {
         return theatreList;
     }
 
-    public Theatre addTheatre(TheatreRequestDto theatreRequestDto){
+    public Theatre addTheatre(TheatreDto theatreDto){
         Theatre theatre = new Theatre();
-        theatre = theatreRequestDto.mapToEntity();
+        theatre = theatreDto.mapToEntity();
         theatreRepository.saveAndFlush(theatre);
         return theatre;
     }
 
-    public Theatre updateTheatre(Integer id, TheatreRequestDto theatreRequestDto){
+    public Theatre updateTheatre(Integer id, TheatreDto theatreDto){
         Theatre theatre = new Theatre();
         theatre = theatreRepository.getById(id);
-        theatre.setName(theatreRequestDto.getName());
-        theatre.setAddress(theatreRequestDto.getAddress());
+        theatre.setName(theatreDto.getName());
+        theatre.setAddress(theatreDto.getAddress());
 
         return theatre;
 
