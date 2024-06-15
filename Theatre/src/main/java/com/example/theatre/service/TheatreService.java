@@ -20,43 +20,30 @@ public class TheatreService {
         this.theatreRepository = theatreRepository;
     }
 
-    public TheatreRequestDto getTheatreById(Integer id){
+    public Theatre getTheatreById(Integer id){
         Theatre theatreEntity = theatreRepository.getById(id);
-        return TheatreRequestDto.builder()
-                .name(theatreEntity.getName())
-                .address(theatreEntity.getAddress()).build();
+        return theatreEntity;
     }
 
-    public List<TheatreRequestDto> getAll(){
+    public List<Theatre> getAll(){
         List<Theatre> theatreList = theatreRepository.findAll();
-        List<TheatreRequestDto> theatreRequestDtoList = new ArrayList<>();
-        for (int i = 0; i < theatreList.size(); i++){
-            TheatreRequestDto currentTheatre = new TheatreRequestDto(); /// აქ მგონი არ უნდა new-თი შექმნა
-            currentTheatre = TheatreRequestDto.builder()
-                    .name(theatreList.get(i).getName())
-                    .address(theatreList.get(i).getAddress()).build();
-            theatreRequestDtoList.add(currentTheatre);
-        }
-        return theatreRequestDtoList;
+        return theatreList;
     }
 
-    public TheatreRequestDto addTheatre(TheatreRequestDto theatreRequestDto){
-        Theatre theatreEntity = new Theatre();
-        theatreEntity = theatreRequestDto.mapToEntity();
-        theatreRepository.saveAndFlush(theatreEntity);
-        return theatreRequestDto;
+    public Theatre addTheatre(TheatreRequestDto theatreRequestDto){
+        Theatre theatre = new Theatre();
+        theatre = theatreRequestDto.mapToEntity();
+        theatreRepository.saveAndFlush(theatre);
+        return theatre;
     }
 
-    public TheatreRequestDto updateTheatre(Integer id, TheatreRequestDto theatreRequestDto){
-        Theatre theatreEntity = new Theatre();
-        theatreEntity = theatreRepository.getById(id);
-        theatreEntity.setName(theatreRequestDto.getName());
-        theatreEntity.setAddress(theatreRequestDto.getAddress());
+    public Theatre updateTheatre(Integer id, TheatreRequestDto theatreRequestDto){
+        Theatre theatre = new Theatre();
+        theatre = theatreRepository.getById(id);
+        theatre.setName(theatreRequestDto.getName());
+        theatre.setAddress(theatreRequestDto.getAddress());
 
-
-        return TheatreRequestDto.builder()
-                .name(theatreEntity.getName())
-                .address(theatreEntity.getAddress()).build();
+        return theatre;
 
     }
 
