@@ -17,9 +17,9 @@ public class TheatreController {
         return theatreService.getAll();
     }
 
-    @GetMapping("/theatre/{theatreid}")
-    public TheatreRequestDto getById(@PathVariable("theatreid") int theatreid){
-        return theatreService.getTheatreById(theatreid);
+    @GetMapping("/theatre/{theatreId}")
+    public TheatreRequestDto getById(@PathVariable("theatreId") int theatreId){
+        return theatreService.getTheatreById(theatreId);
     }
 
     @PostMapping("/theatre")
@@ -28,12 +28,12 @@ public class TheatreController {
     }
 
     @PutMapping("/theatre")
-    public TheatreRequestDto update(@RequestBody int id, TheatreRequestDto theatreRequestDto){
-        return theatreService.updateTheatre(id, theatreRequestDto);
+    public TheatreRequestDto update(@RequestBody int theatreId, TheatreRequestDto theatreRequestDto){
+        return theatreService.updateTheatre(theatreId, theatreRequestDto);
     }
 
-    @DeleteMapping("/theatre/{theatreid}")
-    public void delete(@PathVariable("theatreid") int theatreid){
-        theatreService.delete(theatreid);
+    @DeleteMapping("/theatre/{theatreId}")
+    public void delete(@PathVariable("theatreId") int theatreId){
+        theatreService.delete(theatreId);
     }
 }
