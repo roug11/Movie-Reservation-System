@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Movie.Dto;
 using Movie.Service;
 
 namespace Movie.Controllers
 {
     [Route("movies")]
+    [Authorize]
     [ApiController]
     public class MovieController : ControllerBase
     {
