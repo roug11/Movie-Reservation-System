@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Movie.Dto;
+using Movie.Entity;
 using Movie.Service;
 
 namespace Movie.Test
